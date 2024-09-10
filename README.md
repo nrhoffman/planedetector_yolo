@@ -1,1 +1,1 @@
-# planedetector_yolo
+DATA = https://universe.roboflow.com/gdit/aerial-airport/dataset/1

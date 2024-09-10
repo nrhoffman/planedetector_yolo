@@ -1,0 +1,13 @@
+train: C:/Users/nhoff/Documents/Data/airplanes.yolov9/train/images
+val: C:/Users/nhoff/Documents/Data/airplanes.yolov9/valid/images
+test: C:/Users/nhoff/Documents/Data/airplanes.yolov9/test/images
+
+nc: 1
+names: ['airplane']
+
+roboflow:
+  workspace: gdit
+  project: aerial-airport
+  version: 1
+  license: Public Domain
+  url: https://universe.roboflow.com/gdit/aerial-airport/dataset/1
