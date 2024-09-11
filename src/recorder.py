@@ -4,7 +4,7 @@ import pyautogui
 class Recorder():
     def __init__(self):
         resolution = self.GetResolution()
-        fps = 30.0
+        fps = 60.0
         codec = cv2.VideoWriter_fourcc(*"XVID")
         filename = "Recording.avi"
         self.recording = cv2.VideoWriter(filename, codec, fps, resolution)
