@@ -6,7 +6,7 @@ from ultralytics import YOLO
 image = cv2.imread('../images/planes_example_1.png')
 cv2.resize(image, (640,640))
 
-model = YOLO('runs/detect/train/weights/best.pt')
+model = YOLO('../src/runs/detect/train/weights/best.pt')
 
 results = model(image)
 
