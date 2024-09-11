@@ -1,6 +1,6 @@
 import numpy as np
 
-def PlaneDetector(model, image, confidence_threshold):
+def plane_detector(model, image, confidence_threshold):
     """
     Detects the planes and returns the image with bounding boxes
     around the planes that meet the confidence threshold.

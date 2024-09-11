@@ -1,3 +1,4 @@
 *result.jpg*
 *.avi
 *__pycache__*
+.env
