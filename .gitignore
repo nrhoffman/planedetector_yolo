@@ -1,2 +1,3 @@
-result.jpg
-Recording.avi
+*result.jpg*
+*.avi
+*__pycache__*

@@ -9,7 +9,7 @@ recorder = Recorder()
 cv2.namedWindow("Live", cv2.WINDOW_NORMAL)
 cv2.resizeWindow("Live", 640, 640)
 
-confidence_threshold = 0.70
+confidence_threshold = 0.60
 while True:
     image = pyautogui.screenshot()
  
