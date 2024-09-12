@@ -1,3 +1,4 @@
+import cv2
 import numpy as np
 
 def plane_detector(model, image, confidence_threshold):
@@ -19,6 +20,7 @@ def plane_detector(model, image, confidence_threshold):
     Precondition: a float between 0.00 and 1.00
     """
 
+    image = cv2.resize(image, (640, 640))
     # Run frame through the model
     results = model(image)
 
@@ -33,5 +35,5 @@ def plane_detector(model, image, confidence_threshold):
             rendered_image = result.plot(labels=False, conf=False)
         else:
             rendered_image = image
-
+    rendered_image = cv2.resize(rendered_image, (256, 256))
     return np.array(rendered_image), len(filtered_boxes)
