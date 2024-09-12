@@ -34,4 +34,4 @@ def plane_detector(model, image, confidence_threshold):
         else:
             rendered_image = image
 
-    return np.array(rendered_image)
+    return np.array(rendered_image), len(filtered_boxes)

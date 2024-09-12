@@ -9,10 +9,14 @@
     <h3>My Google Maps Demo</h3>
     <!-- Button to send marker coordinates -->
     <button id="sendCoords">Send Coordinates</button>
+    <!-- Display number of planes -->
+    <span id="planeCount">Number of Planes: 0</span>
     <!-- Loading spinner -->
     <div id="loading" class="loading">Loading...</div>
-    <!--The div element for the map -->
-    <div id="map"></div>
+    <div id="map-container">
+      <div id="map"></div>
+      <div id="imageDisplay"></div> <!-- Display image here -->
+    </div>
 
     <script src="javascript/init.js"></script>
   </body>

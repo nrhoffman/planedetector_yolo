@@ -2,9 +2,29 @@
  * Always set the map height explicitly to define the size of the div element
  * that contains the map. 
  */
- #map {
-    height: 100%;
-  }
+ #map-container {
+    display: flex; /* Use flexbox to position items side by side */
+    gap: 10px; /* Space between the map and the image */
+}
+
+#map {
+    width: 60vw; /* Adjust width as needed */
+    height: 80vh; /* Adjust height as needed */
+}
+
+#imageDisplay {
+    width: 30vw; /* Adjust width as needed */
+    height: 80vh; /* Adjust height as needed */
+    overflow: hidden; /* Hide any overflow from the image */
+    display: flex; /* Center image within the container */
+    align-items: center;
+    justify-content: center;
+}
+
+#imageDisplay img {
+    max-width: 100%; /* Ensure the image fits within the container */
+    max-height: 100%;
+}
   
   /* 
    * Optional: Makes the sample page fill the window. 
@@ -12,7 +32,7 @@
   html,
   body {
     height: 100%;
-    margin: 0;
+    margin: 10px;
     padding: 0;
   }
   

@@ -26,6 +26,7 @@ class TileCreator():
         x1, y1, x2, y2 = self.getTileLimits()
         print(f"Tile limits: x1={x1}, y1={y1}, x2={x2}, y2={y2}")
         tiles = []
+        num_tiles = (x2 - x1 + 1)*(y2 - y1 + 1)
 
         # Iterates through the y limits
         for y in range(y1, y2 + 1):
@@ -33,6 +34,8 @@ class TileCreator():
 
             # Iterates through the x limits
             for x in range(x1, x2 + 1):
+                cur_tile = (y - y1) * (x2 - x1 + 1) + (x - x1 + 1)
+                print(f"Retrieving Tile: {cur_tile} of {num_tiles}")
                 center = self.tileToLatLon(x, y, self.zoom)
                 url = f"https://maps.googleapis.com/maps/api/staticmap?center={center} \
                         &zoom={self.zoom}&size=256x256&maptype=satellite&key={api_key}"

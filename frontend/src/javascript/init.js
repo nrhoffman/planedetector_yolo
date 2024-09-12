@@ -76,16 +76,17 @@ function addMarker(location, map, AdvancedMarkerElement) {
 }
 
 async function sendMarkerCoordinates() {
-    const loadingElement = document.getElementById('loading');
-    const button = document.getElementById('sendCoords');
-
-    button.disabled = true;
-    loadingElement.style.display = 'block';
-    
     if (markers.length < 2) {
         alert('Please add exactly two markers.');
         return;
     }
+    const loadingElement = document.getElementById('loading');
+    const display = document.getElementById('planeCount');
+    const button = document.getElementById('sendCoords');
+
+    button.disabled = true;
+    display.innerText = 'Loading...';
+    loadingElement.style.display = 'block';
 
     // Retrieve the lat/lng of the first two markers
     const [marker1, marker2] = markers;
@@ -102,9 +103,18 @@ async function sendMarkerCoordinates() {
         const response = await fetch(url);
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
-        console.log(data); // Process your data here
+        const numberOfPlanes = data.numberOfPlanes || 0;
+        console.log(numberOfPlanes);
+        display.innerText = `Number of Planes = ${numberOfPlanes}`;
+
+        // Create an image element and set its source to the Base64 string
+        const img = new Image();
+        img.src = `data:image/jpeg;base64,${data.image}`;
+        imageDisplay.innerHTML = ''; // Clear previous image
+        imageDisplay.appendChild(img);
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
+        display.innerText = 'Error';
     } finally {
         loadingElement.style.display = 'none'; // Hide the loading spinner
         button.disabled = false;

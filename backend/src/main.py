@@ -1,3 +1,4 @@
+import base64
 import cv2
 import numpy as np
 import os
@@ -22,23 +23,16 @@ def getApi():
 def getPlanes(lat1, lon1, lat2, lon2):
     tilecreator = TileCreator(float(lat1), float(lon1), float(lat2), float(lon2))
 
-    stitched_image_ratio, stitched_image = ImageProcessing(tilecreator)
+    stitched_image, num_of_planes = ImageProcessing(tilecreator)
 
-    cv2.namedWindow("Live", cv2.WINDOW_NORMAL)
-    if stitched_image_ratio >= 1.00:
-        width = 1080
-        height = int(1080 / stitched_image_ratio)
-    else:
-        width = int(1080 * stitched_image_ratio)
-        height = 1080
+    # Encode the image to Base64
+    _, buffer = cv2.imencode('.jpg', np.array(stitched_image))
+    image_base64 = base64.b64encode(buffer).decode('utf-8')
 
-    cv2.resizeWindow("Live", width, height)
-
-    cv2.imshow('Live', np.array(stitched_image))
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-    return jsonify("Success")
+    return jsonify({
+        'numberOfPlanes': num_of_planes,
+        'image': image_base64
+    })
 
 if __name__ == "__main__": 
    app.run(debug=True)
