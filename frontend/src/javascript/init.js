@@ -4,7 +4,7 @@ const markers = [];
 // Dynamically load Google Maps script
 async function loadGoogleMapsAPI() {
     // Send the GET request
-    const response = await fetch(`http://127.0.0.1:5000/getapi`);       
+    const response = await fetch(`/api/getapi`);       
     if (response.ok) {
         apiKey = await response.json();
     }
@@ -96,7 +96,7 @@ async function sendMarkerCoordinates() {
     const lon2 = Math.max(marker1.position.lng, marker2.position.lng);
 
     // Construct the URL with the coordinates
-    const url = `http://127.0.0.1:5000/getplanes/${lat1}/${lon1}/${lat2}/${lon2}`;
+    const url = `/api/getplanes/${lat1}/${lon1}/${lat2}/${lon2}`;
 
     // Send the GET request
     try {

@@ -1,0 +1,28 @@
+services:
+    backend:
+        build:
+          context: .
+          dockerfile: Dockerfile
+        expose:
+          - "5000"
+        volumes:
+          - .:/app/planedetector_yolo
+        networks:
+          - app-network
+    frontend:
+        image: nginx:latest
+        extra_hosts:
+          - "planedetector.test:127.0.0.1"
+        volumes:
+          - ./frontend/src:/usr/share/nginx/html
+          - ./nginx/nginx_config.conf:/etc/nginx/nginx.conf:ro
+        depends_on:
+          - backend
+        ports:
+          - "80:80"
+        networks:
+          - app-network
+networks:
+  app-network:
+    name: app-network
+    driver: bridge

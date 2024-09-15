@@ -11,15 +11,16 @@ from tilecreator import TileCreator
 load_dotenv()
 #Set up Flask:
 app = Flask(__name__)
-#Set up Flask to bypass CORS:
-cors = CORS(app)
+#Set up Flask to bypass CORS on the frontend service:
+cors = CORS(app,
+            resources={r"/api/*": {"origins": "http://frontend"}})
 
-@app.route("/getapi", methods=["GET"])
+@app.route("/api/getapi", methods=["GET"])
 def getApi():
     api_key = os.getenv('API_KEY')
     return jsonify(api_key)
 
-@app.route("/getplanes/<lat1>/<lon1>/<lat2>/<lon2>", methods=["GET"])
+@app.route("/api/getplanes/<lat1>/<lon1>/<lat2>/<lon2>", methods=["GET"])
 def getPlanes(lat1, lon1, lat2, lon2):
     tilecreator = TileCreator(float(lat1), float(lon1), float(lat2), float(lon2))
 
@@ -35,4 +36,4 @@ def getPlanes(lat1, lon1, lat2, lon2):
     })
 
 if __name__ == "__main__": 
-   app.run(debug=True)
+   app.run(debug=False)

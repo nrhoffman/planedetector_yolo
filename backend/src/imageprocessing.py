@@ -1,3 +1,4 @@
+import os
 from PIL import Image
 from planedetector import plane_detector
 from ultralytics import YOLO
@@ -10,7 +11,8 @@ def ImageProcessing(tilecreator):
     Parameter tilecreator: the object for the matrix of
     tiles.
     """
-    model = YOLO('runs/detect/train/weights/best.pt')
+    path = os.getcwd()
+    model = YOLO(path + '/backend/src/runs/detect/train/weights/best.pt')
 
     # Calculates the size of the stitched image
     tile_width, tile_height = tilecreator.tiles[0][0].shape[1], tilecreator.tiles[0][0].shape[0]
