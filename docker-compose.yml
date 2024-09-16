@@ -14,7 +14,7 @@ services:
         extra_hosts:
           - "planedetector.test:127.0.0.1"
         volumes:
-          - ./frontend/src:/usr/share/nginx/html
+          - ./frontend:/usr/share/nginx/html
           - ./nginx/nginx_config.conf:/etc/nginx/nginx.conf:ro
         depends_on:
           - backend
