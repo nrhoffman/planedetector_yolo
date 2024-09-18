@@ -2,6 +2,7 @@ import base64
 import cv2
 import numpy as np
 import os
+import redis
 from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask_cors import CORS
