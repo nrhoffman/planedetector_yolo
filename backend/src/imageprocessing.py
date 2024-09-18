@@ -27,7 +27,7 @@ def ImageProcessing(r_conn, tilecreator):
     num_of_planes = 0
     for i, tiles in enumerate(tilecreator.tiles):
         for j, tile in enumerate(tiles):
-            current_tile_index = i * len(tiles) + j
+            current_tile_index = i * len(tiles) + j + 1
             data = {
                     "Status": 'In Progress',
                     "Type": 'Image Processing',

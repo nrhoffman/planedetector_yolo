@@ -70,6 +70,14 @@ def event_stream():
         time.sleep(1)
         Update = r_conn.hgetall("Update")
         Update = {key.decode('utf-8'): value.decode('utf-8') for key, value in Update.items()}
+    data = {
+        "Status": Update['Status'],
+        "Type": Update['Type'],
+        "Value": Update['Value'],
+        "Total": Update['Total']
+    }
+    json_data = json.dumps(data)
+    yield f"data: {json_data}\n\n"
 
 if __name__ == "__main__": 
    app.run(debug=False)
