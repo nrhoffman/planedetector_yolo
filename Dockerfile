@@ -23,5 +23,3 @@ RUN chmod -R 755 /app
 EXPOSE 5000
 
 CMD ["gunicorn", "--pythonpath", "./backend/src", "--workers=2", "--bind", "0.0.0.0:5000", "backend.src.main:app"]
-
-
