@@ -7,18 +7,37 @@
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
-    <h3>Plane Detector</h3>
-    <!-- Button to send marker coordinates -->
-    <button id="sendCoords">Send Coordinates</button>
-    <!-- Display number of planes -->
-    <span id="planeCount">Number of Planes: 0</span>
-    <!-- Loading spinner -->
-    <div id="loading" class="loading">Loading...</div>
-    <div id="map-container">
-      <div id="map"></div>
-      <div id="imageDisplay"></div> <!-- Display image here -->
-    </div>
+      <h3>Plane Detector</h3>
+      <!-- Top Banner -->
+      <div id="top-banner-container">
+          <!-- Button to send marker coordinates -->
+          <button id="sendCoords">Send Coordinates</button>
+          <!-- Display number of planes -->
+          <span id="planeCount">Number of Planes: 0</span>
+          <!-- Display Progress Bars -->
+          <div id="progress-container">
+              <div class="progress-item">
+                  <label for="progress-bar-tiles">Tile Generation</label>
+                  <div class="progress-bar-container">
+                      <div id="progress-bar-tiles-empty"></div>
+                      <div id="progress-bar-tiles">0%</div>
+                  </div>
+              </div>
+              <div class="progress-item">
+                  <label for="progress-bar-processing">Image Processing</label>
+                  <div class="progress-bar-container">
+                      <div id="progress-bar-processing-empty"></div>
+                      <div id="progress-bar-processing">0%</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- Display image and map here -->
+      <div id="map-container">
+          <div id="map"></div>
+          <div id="imageDisplay"></div>
+      </div>
 
-    <script src="javascript/init.js"></script>
+      <script src="javascript/init.js"></script>
   </body>
 </html>

@@ -75,18 +75,28 @@ function addMarker(location, map, AdvancedMarkerElement) {
     map.panTo(location);
 }
 
+function updateProgressBars(tiles_per, processing_per) {
+    const progressBarTiles = document.getElementById('progress-bar-tiles');
+    const progressBarProcessing = document.getElementById('progress-bar-processing');
+    
+    // Update the width and text of the progress bar
+    progressBarTiles.style.width = tiles_per + '%';
+    progressBarTiles.textContent = tiles_per + '%';
+
+    progressBarProcessing.style.width = processing_per + '%';
+    progressBarProcessing.textContent = processing_per + '%';
+}
+
 async function sendMarkerCoordinates() {
     if (markers.length < 2) {
         alert('Please add exactly two markers.');
         return;
     }
-    const loadingElement = document.getElementById('loading');
     const display = document.getElementById('planeCount');
     const button = document.getElementById('sendCoords');
 
     button.disabled = true;
     display.innerText = 'Loading...';
-    loadingElement.style.display = 'block';
 
     // Retrieve the lat/lng of the first two markers
     const [marker1, marker2] = markers;
@@ -97,14 +107,48 @@ async function sendMarkerCoordinates() {
 
     // Construct the URL with the coordinates
     const url = `/api/getplanes/${lat1}/${lon1}/${lat2}/${lon2}`;
+    const prog_url = `/api/getprogress`;
+
+    // Start SSE connection
+    const eventSource = new EventSource(prog_url);
+
+    // Handle SSE messages
+    eventSource.onmessage = (event) => {
+        data = JSON.parse(event.data)
+        if(data.Status == "In Progress"){
+            progress_per = Math.round((parseInt(data.Value, 10)/parseInt(data.Total, 10))*100)
+            if(data.Type == "Tile Generation"){
+                updateProgressBars(progress_per, 0)
+            }
+            else{
+                updateProgressBars(100, progress_per)
+            }
+        }
+        else if(data.Status == "Complete"){
+            updateProgressBars(100, 100)
+            eventSource.close();
+        }
+        else{
+            console.log('Update from SSE:', );
+        }
+    };
+    eventSource.onerror = (error) => {
+        if (eventSource.readyState === EventSource.CLOSED) {
+            console.log('SSE connection closed.');
+        } else {
+            console.error('Error with SSE:', error);
+        }
+        eventSource.close();
+    };
 
     // Send the GET request
     try {
+        // Start standard fetch
         const response = await fetch(url);
+        
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
         const numberOfPlanes = data.numberOfPlanes || 0;
-        console.log(numberOfPlanes);
         display.innerText = `Number of Planes = ${numberOfPlanes}`;
 
         // Create an image element and set its source to the Base64 string
@@ -116,7 +160,6 @@ async function sendMarkerCoordinates() {
         console.error('There has been a problem with your fetch operation:', error);
         display.innerText = 'Error';
     } finally {
-        loadingElement.style.display = 'none'; // Hide the loading spinner
         button.disabled = false;
     }
 }
