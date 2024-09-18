@@ -104,7 +104,26 @@ async function sendMarkerCoordinates() {
 
     // Handle SSE messages
     eventSource.onmessage = (event) => {
-        console.log('Update from SSE:', event.data);
+        data = JSON.parse(event.data)
+        if(data.Status == "In Progress"){
+            progress_per = Math.round((parseInt(data.Value, 10)/parseInt(data.Total, 10))*100)
+            if(data.Type == "Tile Generation"){
+                console.log('Tile Generation: ', progress_per, '/', 100);
+                console.log('Image Processing: ', 0, '/', 100);
+            }
+            else{
+                console.log('Tile Generation: ', 100, '/', 100 );
+                console.log('Image Processing:', progress_per, '/', 100);
+            }
+        }
+        else if(data.Status == "Complete"){
+            console.log('Tile Generation: ', 100, '/', 100 );
+            console.log('Image Processing:', 100, '/', 100);
+            eventSource.close();
+        }
+        else{
+            console.log('Update from SSE:', );
+        }
     };
     eventSource.onerror = (error) => {
         if (eventSource.readyState === EventSource.CLOSED) {
