@@ -7,8 +7,11 @@ services:
           - "5000"
         volumes:
           - .:/app/planedetector_yolo
+        depends_on:
+          - redis
         networks:
           - app-network
+          - redis-network
     frontend:
         image: nginx:latest
         extra_hosts:
@@ -22,7 +25,19 @@ services:
           - "80:80"
         networks:
           - app-network
+    redis:
+        image: redis:latest
+        command: redis-server /etc/redis/redis.conf
+        volumes:
+          - ./redis/redis.conf:/etc/redis/redis.conf:ro
+        expose:
+          - "6379"
+        networks:
+          - redis-network
 networks:
   app-network:
     name: app-network
+    driver: bridge
+  redis-network:
+    name: redis-network
     driver: bridge
