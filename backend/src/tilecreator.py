@@ -11,8 +11,9 @@ class TileCreator():
     Attributes:
         self.tiles = matrix of tiles
     """
-    def __init__(self, lat1, lon1, lat2, lon2):
+    def __init__(self, r_conn, lat1, lon1, lat2, lon2):
         """ Inits the class """
+        self.r_conn = r_conn
         self.lat1 = lat1
         self.lon1 = lon1
         self.lat2 = lat2
@@ -35,7 +36,13 @@ class TileCreator():
             # Iterates through the x limits
             for x in range(x1, x2 + 1):
                 cur_tile = (y - y1) * (x2 - x1 + 1) + (x - x1 + 1)
-                print(f"Retrieving Tile: {cur_tile} of {num_tiles}")
+                data = {
+                    "Status": 'In Progress',
+                    "Type": 'Tile Generation',
+                    "Value": cur_tile,
+                    "Total": num_tiles
+                }
+                self.r_conn.hmset("Update", data)
                 center = self.tileToLatLon(x, y, self.zoom)
                 url = f"https://maps.googleapis.com/maps/api/staticmap?center={center} \
                         &zoom={self.zoom}&size=256x256&maptype=satellite&key={api_key}"

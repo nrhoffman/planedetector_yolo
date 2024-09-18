@@ -97,14 +97,32 @@ async function sendMarkerCoordinates() {
 
     // Construct the URL with the coordinates
     const url = `/api/getplanes/${lat1}/${lon1}/${lat2}/${lon2}`;
+    const prog_url = `/api/getprogress`;
+
+    // Start SSE connection
+    const eventSource = new EventSource(prog_url);
+
+    // Handle SSE messages
+    eventSource.onmessage = (event) => {
+        console.log('Update from SSE:', event.data);
+    };
+    eventSource.onerror = (error) => {
+        if (eventSource.readyState === EventSource.CLOSED) {
+            console.log('SSE connection closed.');
+        } else {
+            console.error('Error with SSE:', error);
+        }
+        eventSource.close();
+    };
 
     // Send the GET request
     try {
+        // Start standard fetch
         const response = await fetch(url);
+        
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
         const numberOfPlanes = data.numberOfPlanes || 0;
-        console.log(numberOfPlanes);
         display.innerText = `Number of Planes = ${numberOfPlanes}`;
 
         // Create an image element and set its source to the Base64 string
