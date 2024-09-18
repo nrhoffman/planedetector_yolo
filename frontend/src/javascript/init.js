@@ -75,18 +75,28 @@ function addMarker(location, map, AdvancedMarkerElement) {
     map.panTo(location);
 }
 
+function updateProgressBars(tiles_per, processing_per) {
+    const progressBarTiles = document.getElementById('progress-bar-tiles');
+    const progressBarProcessing = document.getElementById('progress-bar-processing');
+    
+    // Update the width and text of the progress bar
+    progressBarTiles.style.width = tiles_per + '%';
+    progressBarTiles.textContent = tiles_per + '%';
+
+    progressBarProcessing.style.width = processing_per + '%';
+    progressBarProcessing.textContent = processing_per + '%';
+}
+
 async function sendMarkerCoordinates() {
     if (markers.length < 2) {
         alert('Please add exactly two markers.');
         return;
     }
-    const loadingElement = document.getElementById('loading');
     const display = document.getElementById('planeCount');
     const button = document.getElementById('sendCoords');
 
     button.disabled = true;
     display.innerText = 'Loading...';
-    loadingElement.style.display = 'block';
 
     // Retrieve the lat/lng of the first two markers
     const [marker1, marker2] = markers;
@@ -108,17 +118,14 @@ async function sendMarkerCoordinates() {
         if(data.Status == "In Progress"){
             progress_per = Math.round((parseInt(data.Value, 10)/parseInt(data.Total, 10))*100)
             if(data.Type == "Tile Generation"){
-                console.log('Tile Generation: ', progress_per, '/', 100);
-                console.log('Image Processing: ', 0, '/', 100);
+                updateProgressBars(progress_per, 0)
             }
             else{
-                console.log('Tile Generation: ', 100, '/', 100 );
-                console.log('Image Processing:', progress_per, '/', 100);
+                updateProgressBars(100, progress_per)
             }
         }
         else if(data.Status == "Complete"){
-            console.log('Tile Generation: ', 100, '/', 100 );
-            console.log('Image Processing:', 100, '/', 100);
+            updateProgressBars(100, 100)
             eventSource.close();
         }
         else{
@@ -153,7 +160,6 @@ async function sendMarkerCoordinates() {
         console.error('There has been a problem with your fetch operation:', error);
         display.innerText = 'Error';
     } finally {
-        loadingElement.style.display = 'none'; // Hide the loading spinner
         button.disabled = false;
     }
 }

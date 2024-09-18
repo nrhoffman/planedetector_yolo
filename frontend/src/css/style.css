@@ -22,32 +22,52 @@ button:disabled {
   cursor: not-allowed;
 }
 
-
 #progress-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 75%;
-}
-
-.progress-item {
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
+}
+
+.progress-item {
+  position: relative;
+  height: 40px;
+  width: 75%;
+}
+
+.progress-bar-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+#progress-bar-tiles-empty,
+#progress-bar-processing-empty {
+  height: 100%;
+  width: 100%;
+  background-color: #104b12;
+  border-radius: 5px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 #progress-bar-tiles,
 #progress-bar-processing {
-  height: 30px;
-  width: 100%;
+  height: 100%;
+  width: 0%;
   background-color: #4caf50;
   text-align: center;
   line-height: 30px;
   color: white;
   border-radius: 5px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
- #map-container {
+#map-container {
     display: flex;
     gap: 10px;
 }
