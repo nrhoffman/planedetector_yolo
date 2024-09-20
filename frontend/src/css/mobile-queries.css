@@ -1,0 +1,60 @@
+@media (max-width: 768px) {
+    #title-banner-container h3 {
+        font-size: 30px;
+    }
+    
+    #map-container {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        height: auto;
+    }
+    
+    #map, #imageDisplay {
+        width: 100%;
+        flex-grow: 1;
+        min-height: 20vh;
+    }
+    
+    #imageDisplay img {
+        width: 100%;
+        padding: 20px;
+        height: auto;
+    }
+    
+    #progress-container {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .progress-item {
+        width: 90%;
+        height: 15px;
+        margin-bottom: 8px;
+    }
+
+    #progress-container label {
+        font-size: 12px;
+    }
+
+    .progress-bar-container {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #progress-bar-tiles-empty,
+    #progress-bar-processing-empty {
+        height: 100%;
+    }
+
+    #progress-bar-tiles,
+    #progress-bar-processing {
+        height: 100%;
+        font-size: 12px;
+    }
+}
