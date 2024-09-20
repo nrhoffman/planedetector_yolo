@@ -1,5 +1,7 @@
 DATA = https://universe.roboflow.com/gdit/aerial-airport/dataset/1
 
+Warning: Picking an area too large for CPU can crash computer.
+
 INSTRUCTIONS
 1) An API Key must be created here: https://console.cloud.google.com/welcome
 
