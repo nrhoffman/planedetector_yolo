@@ -52,32 +52,30 @@ def getProgress():
                     mimetype="text/event-stream")
 
 def event_stream():
-    data = {"Status": "Pending"}
-    json_data = json.dumps(data)
-    yield f"data: {json_data}\n\n"
+    yield f"data: {{\"Status\": \"Pending\"}}\n\n"
     time.sleep(2)
-    Update = r_conn.hgetall("Update")
-    Update = {key.decode('utf-8'): value.decode('utf-8') for key, value in Update.items()}
-    while Update['Status'] != "Complete":
-        data = {
-            "Status": Update['Status'],
-            "Type": Update['Type'],
-            "Value": Update['Value'],
-            "Total": Update['Total']
-        }
-        json_data = json.dumps(data)
-        yield f"data: {json_data}\n\n"
-        time.sleep(1)
-        Update = r_conn.hgetall("Update")
-        Update = {key.decode('utf-8'): value.decode('utf-8') for key, value in Update.items()}
-    data = {
-        "Status": Update['Status'],
-        "Type": Update['Type'],
-        "Value": Update['Value'],
-        "Total": Update['Total']
-    }
-    json_data = json.dumps(data)
-    yield f"data: {json_data}\n\n"
+
+    try:
+        while True:
+            Update = r_conn.hgetall("Update")
+            if Update is None or not Update:
+                raise ValueError("Key 'Update' does not exist in Redis.")
+
+            Update = {key.decode('utf-8'): value.decode('utf-8') for key, value in Update.items()}
+            
+            if Update.get('Status') == "Complete":
+                break
+
+            data = {
+                "Status": Update.get('Status', 'Pending'),
+                "Type": Update.get('Type', ''),
+                "Value": Update.get('Value', '0'),
+                "Total": Update.get('Total', '0')
+            }
+            json_data = json.dumps(data)
+            yield f"data: {json_data}\n\n"
+    except Exception as e:
+        print(f"Error fetching from Redis: {e}")
 
 if __name__ == "__main__": 
    app.run(debug=False)
